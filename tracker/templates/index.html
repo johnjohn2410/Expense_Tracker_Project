@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Expense Tracker</title>
+</head>
+<body>
+    <h1>Expenses</h1>
+    <ul>
+        {% for expense in expenses %}
+        <li>{{ expense.date }} - {{ expense.category }}: ${{ expense.amount }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'add_expense' %}">Add Expense</a>
+</body>
+</html>
