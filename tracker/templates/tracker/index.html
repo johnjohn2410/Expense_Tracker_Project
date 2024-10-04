@@ -5,10 +5,25 @@
 </head>
 <body>
     <h1>Expenses</h1>
-    <ul>
+
+    <!--Category Filter -->
+    <form method="get">
+        <label for="category">Filter by Category:></label>
+        <select name="category" id="category">
+            <option value="">All</option>
+            {% for category in categories %}
+                <option value="{{ category }}">{{ category }}</option>
+            {% endfor %}
+        </select>
+        <button type ="submit">/Filter</button>
+    </form>
+
+
+    </form>
         {% for expense in expenses %}
         <li>{{ expense.date }} - {{ expense.category }}: ${{ expense.amount }}</li>
         {% endfor %}
+
     </ul>
     <a href="{% url 'add_expense' %}">Add Expense</a>
 </body>

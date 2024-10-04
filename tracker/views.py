@@ -4,9 +4,13 @@ from .forms import ExpenseForm
 
 # Display all expenses
 def index(request):
+   category = request.GET.get('category')
+   if category:
+       expenses = Expense.objects.filter(category=category)
+   else:
     expenses = Expense.objects.all()
-    # Update the path to the template to 'tracker/index.html'
-    return render(request, 'tracker/index.html', {'expenses': expenses})
+    categories = Expense.objects.values_list('category', flat=True).distinct()
+   return render(request, 'tracker/index.html', {'expenses': expenses, 'categories': categories})
 
 
 # Add a new expense
