@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Expense Tracker Login</title>
+    </head>
+    <body>
+        <h2> Please Log in </h2>
+        <form method="post">
+        {% crsf_token %}
+        {{ form.as_p}}
+            <button type="submit">Login</button>
+        </form>
+        <p>Not a user? <a href="{% url 'signup' %}>">Sign up here</a></p>
+    </body>
+</html>
