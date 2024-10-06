@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path, include  # Make sure 'include' is imported
 
 urlpatterns = [
-    path('admin/', admin.site.urls),  # Admin panel route
+    path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')), # Authentication URLS
     path('', include('tracker.urls')),  # This includes the URLs from your 'tracker' app
 ]
