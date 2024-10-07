@@ -25,4 +25,17 @@
         </select>
 
         <!-- Button to submit the form and apply the category filter -->
-        <bu
+        <button type="submit">Filter</button>
+    </form>
+
+    <!-- Displaying the filtered or unfiltered list of expenses -->
+    <ul>
+        {% for expense in expenses %}
+        <li>{{ expense.date }} - {{ expense.category }}: ${{ expense.amount }}</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Link to add a new expense -->
+    <a href="{% url 'add_expense' %}">Add Expense</a>
+</body>
+</html>
