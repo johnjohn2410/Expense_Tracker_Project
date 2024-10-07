@@ -1,30 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Title of the page displayed in the browser's tab -->
     <title>Expense Tracker</title>
 </head>
 <body>
+    <!-- Main heading for the list of expenses -->
     <h1>Expenses</h1>
 
-    <!--Category Filter -->
+    <!-- Form to filter expenses by category -->
     <form method="get">
-        <label for="category">Filter by Category:></label>
+        <!-- Label for the category filter -->
+        <label for="category">Filter by Category:</label>
+
+        <!-- Dropdown selection for filtering by category -->
         <select name="category" id="category">
+            <!-- Option to show all expenses (no filter) -->
             <option value="">All</option>
+
+            <!-- Loop through the categories and create an option for each one -->
             {% for category in categories %}
                 <option value="{{ category }}">{{ category }}</option>
             {% endfor %}
         </select>
-        <button type ="submit">/Filter</button>
-    </form>
 
-
-    </form>
-        {% for expense in expenses %}
-        <li>{{ expense.date }} - {{ expense.category }}: ${{ expense.amount }}</li>
-        {% endfor %}
-
-    </ul>
-    <a href="{% url 'add_expense' %}">Add Expense</a>
-</body>
-</html>
+        <!-- Button to submit the form and apply the category filter -->
+        <bu
