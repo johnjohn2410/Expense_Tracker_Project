@@ -1,26 +1,15 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <!-- The title displayed on the browser tab -->
-        <title>Expense Tracker Login</title>
-    </head>
-    <body>
-        <!-- Main heading for the login page -->
-        <h2>Please Log in</h2>
-
-        <!-- Form for logging in the user -->
-        <form method="post">
-            <!-- CSRF token for security to prevent Cross-Site Request Forgery -->
-            {% csrf_token %}
-
-            <!-- Django form fields rendered automatically in paragraph form -->
-            {{ form.as_p }}
-
-            <!-- Button to submit the form and attempt login -->
-            <button type="submit">Login</button>
-        </form>
-
-        <!-- Link to the signup page for users who don't have an account yet -->
-        <p>Not a user? <a href="{% url 'signup' %}">Sign up here</a></p>
-    </body>
+<head>
+    <title>Expense Tracker Login</title>
+</head>
+<body>
+    <h2>Please Log in</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+    </form>
+    <p>Not a user? <a href="{% url 'signup' %}">Sign up here</a></p>
+</body>
 </html>

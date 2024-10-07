@@ -1,26 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- Title of the page, displayed in the browser tab -->
     <title>Add Expense</title>
 </head>
 <body>
-    <!-- Main heading of the page -->
     <h1>Add Expense</h1>
-
-    <!-- Form to add a new expense. It uses the POST method to send data -->
     <form method="post">
-        <!-- CSRF token to protect the form against Cross-Site Request Forgery -->
         {% csrf_token %}
-
-        <!-- This will render the fields from the Django form associated with adding expenses -->
         {{ form.as_p }}
-
-        <!-- Submit button to save the new expense -->
         <button type="submit">Save</button>
     </form>
-
-    <!-- Link to go back to the main expenses list -->
     <a href="{% url 'index' %}">Back to Expenses</a>
 </body>
 </html>

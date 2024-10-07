@@ -1,23 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- Title of the signup page, displayed in the browser tab -->
     <title>Sign up</title>
 </head>
 <body>
-    <!-- Main heading for the signup page -->
     <h2>Sign up</h2>
-
-    <!-- Signup form that will POST the user data to the server -->
     <form method="post">
-        <!-- CSRF token for security to prevent Cross-Site Request Forgery -->
         {% csrf_token %}
-
-        <!-- Render the Django form fields in paragraph form -->
         {{ form.as_p }}
-
-        <!-- Button to submit the form -->
-        <button type="submit">Sign up</button>
+        <button type="submit">Signup</button>
     </form>
+    <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
 </body>
 </html>
