@@ -33,7 +33,7 @@ ROOT_URLCONF = 'Expense_Tracker_Project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # Make sure this points to the correct directory
+        'DIRS': [BASE_DIR / 'tracker' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -45,6 +45,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 
 WSGI_APPLICATION = 'Expense_Tracker_Project.wsgi.application'
