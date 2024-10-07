@@ -14,3 +14,10 @@ class ExpenseForm(forms.ModelForm):
     class Meta:
         model = Expense
         fields = ['category', 'amount', 'date']
+        widgets = {
+            'category': forms.Select(choices=Expense.CATEGORY_CHOICES),
+        }
+
+class LoginForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
