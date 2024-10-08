@@ -2,17 +2,23 @@ from django.db import models
 
 class Expense(models.Model):
     CATEGORY_CHOICES = [
-        ('Groceries', 'Groceries'),
-        ('Eating out', 'Eating out'),
-        ('Transportation', 'Transportation'),
         ('Communication', 'Communication'),
-        ('Housing', 'Housing'),
-        ('Personal Care', 'Personal Care'),
-        ('Health and Wellness', 'Health and Wellness'),
+        ('Childcare', 'Childcare'),
+        ('Dining Out', 'Dining Out'),
         ('Education', 'Education'),
         ('Entertainment', 'Entertainment'),
-        ('Debt Payments', 'Debt Payments'),
+        ('Gas', 'Gas'),
+        ('Groceries', 'Groceries'),
+        ('Housing', 'Housing'),
+        ('Maintenance', 'Maintenance'),
+        ('Medical', 'Medical'),
+        ('Office Supplies', 'Office Supplies'),
+        ('Personal Care', 'Personal Care'),
         ('Pets', 'Pets'),
+        ('Recurring Expense', 'Recurring Expense'),
+        ('Transportation', 'Transportation'),
+        ('Travel', 'Travel'),
+        ('Utilities', 'Utilities'),
         ('Miscellaneous', 'Miscellaneous'),
     ]
 
