@@ -1,15 +1,98 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <style>
+    
+    body, html {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(#2c2c2c, #1c1c1c); 
+        font-family: Arial, sans-serif;
+    }
+
+    
+    .container {
+        background-color: #333; 
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); 
+        text-align: center;
+        color: #FFFFFF; 
+    }
+
+    
+    h2 {
+        color: #1E90FF; 
+    }
+
+    
+    form {
+        margin: 20px 0;
+    }
+
+    label {
+        color: #5F9EA0; 
+    }
+
+    input {
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        background-color: #1E90FF; 
+        color: white;
+        width: 100%; 
+        max-width: 300px; 
+        box-sizing: border-box; 
+    }
+
+    button {
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: none;
+        background-color: #1E90FF; 
+        color: white;
+        cursor: pointer;
+        width: 100%; 
+        max-width: 300px; 
+    }
+
+    button:hover {
+        background-color: #4682B4; 
+    }
+    
+    a {
+        color: #1E90FF; 
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: #4682B4; 
+    }
+
+    p {
+        margin-top: 20px;
+    }
+
+    </style>
     <title>Expense Tracker Login</title>
 </head>
 <body>
-    <h2>Please Log in</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Login</button>
-    </form>
-    <p>Not a user? <a href="{% url 'signup' %}">Sign up here</a></p>
+
+    <div class="container">
+        <h2>Please Log in</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Login</button>
+        </form>
+
+        <p>Not a user? <a href="{% url 'signup' %}">Sign up here</a></p>
+    </div>
+
 </body>
 </html>
