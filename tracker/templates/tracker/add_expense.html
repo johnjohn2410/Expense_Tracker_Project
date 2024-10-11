@@ -1,15 +1,91 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <style>
+    
+    body, html {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient( #2c2c2c, #1c1c1c); 
+        font-family: Arial, sans-serif;
+    }
+
+    
+    .container {
+        background-color: #333; 
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); 
+        text-align: center;
+        color: #FFFFFF; 
+    }
+
+    
+    h1 {
+        color: #1E90FF;
+    }
+
+    
+    form {
+        margin: 20px 0;
+    }
+
+    label {
+        color: #5F9EA0; 
+    }
+
+    input, button {
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        background-color: #1E90FF; 
+        color: white;
+    }
+
+    button {
+        background-color: #1E90FF;
+        color: white;
+        cursor: pointer;
+        border: none;
+    }
+
+    button:hover {
+        background-color: #4682B4; 
+    }
+
+    /* Links styling */
+    a {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #007BFF; 
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    a:hover {
+        background-color: #4682B4; 
+    }
+    </style>
     <title>Add Expense</title>
 </head>
 <body>
-    <h1>Add Expense</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Save</button>
-    </form>
-    <a href="{% url 'index' %}">Back to Expenses</a>
+
+    <div class="container">
+        <h1>Add Expense</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Save</button>
+        </form>
+
+        <a href="{% url 'index' %}">Back to Expenses</a>
+    </div>
+
 </body>
 </html>
