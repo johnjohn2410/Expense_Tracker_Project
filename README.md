@@ -9,6 +9,7 @@ This is a *web-based expense tracker* built with Django. It allows users to add,
 - 📜 **View All Expenses** in an organized list.
 - 📝 **Optional Notes** for detailed descriptions of each expense.
 - 💼 **Easy to Extend** and customize for your specific needs.
+- Export data to CSV files or through excel.
 
 ---
 
