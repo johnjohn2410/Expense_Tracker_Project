@@ -6,13 +6,16 @@ from .forms import ExpenseForm
 
 # Home page
 def index(request):
+    return render(request, 'tracker/index.html', {})
+
+def home_expense(request):
     category = request.GET.get('category')
     if category:
         expenses = Expense.objects.filter(category=category)
     else:
         expenses = Expense.objects.all()
     categories = Expense.objects.values_list('category', flat=True).distinct()
-    return render(request, 'tracker/index.html', {'expenses': expenses, 'categories': categories})
+    return render(request, 'tracker/home_expense.html', {'expenses': expenses, 'categories': categories})
 
 # Signup page
 def user_signup(request):
@@ -35,7 +38,7 @@ def user_login(request):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
-                return redirect('index')
+                return redirect('home_expense')
     else:
         form = LoginForm()
     return render(request, 'registration/login.html', {'form': form})
@@ -43,7 +46,7 @@ def user_login(request):
 # Logout page
 def user_logout(request):
     logout(request)
-    return redirect('login')
+    return redirect('index')
 
 # Add expense page
 def add_expense(request):
@@ -51,7 +54,7 @@ def add_expense(request):
         form = ExpenseForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('index')
+            return redirect('home_expense')
     else:
         form = ExpenseForm()
     return render(request, 'tracker/add_expense.html', {'form': form})

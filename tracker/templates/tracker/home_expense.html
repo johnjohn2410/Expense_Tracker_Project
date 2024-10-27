@@ -10,7 +10,6 @@
         }
 
         h1 { 
-            text-align: center;
             color: #1E90FF; 
         }
 
@@ -74,9 +73,25 @@
 </head>
 <body>
     <div class="container">
-        <h1>Expense Tracker</h1>
-            <a href="{% url 'login' %}">Login</a>
-            <a href="{% url 'signup' %}">Signup</a>
+        <h1>Expenses</h1>
+        <p>Welcome, {{ request.user.username }}!</p>
+        <form method="get">
+            <label for="category">Filter by Category:</label>
+            <select name="category" id="category">
+                <option value="">All</option>
+                {% for category in categories %}
+                    <option value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Filter</button>
+        </form>
+        <a href="{% url 'add_expense' %}">Add Expense</a>
+        <ul>
+            {% for expense in expenses %}
+                <li>{{ expense.date }} - {{ expense.category }}: ${{ expense.amount }}</li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'logout' %}">Logout</a>
     </div>
 </body>
 </html>
