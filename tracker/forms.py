@@ -8,7 +8,6 @@ from tracker.models import Expense
 class DateClick(forms.DateInput):
     input_type = 'date'
 
-
 class SignUpForm(UserCreationForm):
     class Meta:
         model = User
