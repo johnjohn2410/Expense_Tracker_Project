@@ -9,13 +9,16 @@ def index(request):
     return render(request, 'tracker/index.html', {})
 
 def home_expense(request):
-    category = request.GET.get('category')
-    if category:
-        expenses = Expense.objects.filter(category=category)
+    if request.user.is_authenticated:
+        category = request.GET.get('category')
+        if category:
+            expenses = Expense.objects.filter(category=category)
+        else:
+            expenses = Expense.objects.all()
+        categories = Expense.objects.values_list('category', flat=True).distinct()
+        return render(request, 'tracker/home_expense.html', {'expenses': expenses, 'categories': categories})
     else:
-        expenses = Expense.objects.all()
-    categories = Expense.objects.values_list('category', flat=True).distinct()
-    return render(request, 'tracker/home_expense.html', {'expenses': expenses, 'categories': categories})
+        return redirect('index')
 
 # Signup page
 def user_signup(request):
@@ -50,11 +53,14 @@ def user_logout(request):
 
 # Add expense page
 def add_expense(request):
-    if request.method == 'POST':
-        form = ExpenseForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('home_expense')
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = ExpenseForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('home_expense')
+        else:
+            form = ExpenseForm()
+        return render(request, 'tracker/add_expense.html', {'form': form})
     else:
-        form = ExpenseForm()
-    return render(request, 'tracker/add_expense.html', {'form': form})
+        return redirect('index')
