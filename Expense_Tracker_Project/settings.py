@@ -76,3 +76,5 @@ STATIC_URL = 'static/'
 # Default primary key field type
 # New models that do not specify a primary key field will use 'BigAutoField' as the default.
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+USE_THOUSAND_SEPARATOR = True

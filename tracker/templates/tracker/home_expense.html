@@ -56,8 +56,8 @@
         ul {
             list-style: none;
             padding: 0;
-            text-align: left; 
-            margin: 20px 0; 
+            text-align: left;
+            margin: 20px 0;
         }
 
         a {
@@ -88,7 +88,7 @@
         <a href="{% url 'add_expense' %}">Add Expense</a>
         <ul>
             {% for expense in expenses %}
-                <li>{{ expense.date }} - {{ expense.category }}: ${{ expense.amount }}</li>
+                <li>{{ expense.date }} - {{ expense.category }} : ${{ expense.amount }}</li>
             {% endfor %}
         </ul>
         <a href="{% url 'logout' %}">Logout</a>
