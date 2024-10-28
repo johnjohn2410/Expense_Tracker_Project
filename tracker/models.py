@@ -23,7 +23,7 @@ class Expense(models.Model):
     ]
 
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    amount = models.DecimalField(max_digits=11, decimal_places=2)
     date = models.DateField()
 
     def __str__(self):
