@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',# Handles content types
     'django.contrib.sessions',    # Manages user sessions
     'django.contrib.messages',    # Provides messaging framework
+    'django.contrib.staticfiles', # Manages static files
     'tracker',                    # My custom expense tracker app
 ]
 
@@ -71,10 +72,23 @@ DATABASES = {
 
 # Static files settings
 # This URL defines the base path for serving static files such as CSS, JavaScript, and images.
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']  # Optional: Define additional directories for static files
+
+# Media settings
+# These settings are used to serve user-uploaded files such as the generated pie chart images.
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # New models that do not specify a primary key field will use 'BigAutoField' as the default.
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Internationalization settings
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'UTC'
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
 
 USE_THOUSAND_SEPARATOR = True

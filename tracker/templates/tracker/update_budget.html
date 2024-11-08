@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Monthly Budget</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(#2c2c2c, #1c1c1c);
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+        .container {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        h2 {
+            color: #1E90FF;
+        }
+
+        form {
+            margin: 20px 0;
+        }
+
+        label {
+            color: #5F9EA0;
+        }
+
+        input, button {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #1E90FF;
+            color: white;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        button {
+            background-color: #1E90FF;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #4682B4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Update Monthly Budget</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Update Budget</button>
+        </form>
+        <a href="{% url 'home_expense' %}" style="color: #1E90FF;">Back to Home</a>
+    </div>
+</body>
+</html>
