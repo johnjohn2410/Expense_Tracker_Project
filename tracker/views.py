@@ -5,9 +5,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.db.models import Sum
 from .models import Expense, Income, UserProfile
 from .forms import SignUpForm, LoginForm, ExpenseForm, IncomeForm, BudgetForm
-import matplotlib.pyplot as plt
-from io import BytesIO
-import base64
+# import matplotlib.pyplot as plt
+# from io import BytesIO
+# import base64
 
 # Home page
 def index(request):
@@ -36,25 +36,27 @@ def home_expense(request):
         remaining_balance = total_income - total_expenses
 
         # Get categories and prepare data for pie chart
-        category_totals = expenses.values('category').annotate(total=Sum('amount'))
-        labels = [item['category'] for item in category_totals if item['total'] > 0]
-        sizes = [item['total'] for item in category_totals if item['total'] > 0]
+        # category_totals = expenses.values('category').annotate(total=Sum('amount'))
+        # labels = [item['category'] for item in category_totals if item['total'] > 0]
+        # sizes = [item['total'] for item in category_totals if item['total'] > 0]
 
-        if sizes:  # Only create a pie chart if there are valid positive values
-            # Create the pie chart
-            plt.switch_backend('Agg')  # Use Agg backend for non-GUI environments
-            fig, ax = plt.subplots(figsize=(6, 6))
-            ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
-            ax.axis('equal')  # Equal aspect ratio ensures the pie is drawn as a circle.
+        # if sizes:  # Only create a pie chart if there are valid positive values
+        #     # Create the pie chart
+        #     plt.switch_backend('Agg')  # Use Agg backend for non-GUI environments
+        #     fig, ax = plt.subplots(figsize=(6, 6))
+        #     ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
+        #     ax.axis('equal')  # Equal aspect ratio ensures the pie is drawn as a circle.
 
-            # Save the chart to a BytesIO buffer
-            buf = BytesIO()
-            plt.savefig(buf, format='png')
-            buf.seek(0)
-            encoded_image = base64.b64encode(buf.read()).decode('utf-8')
-            buf.close()
-        else:
-            encoded_image = None
+        #     # Save the chart to a BytesIO buffer
+        #     buf = BytesIO()
+        #     plt.savefig(buf, format='png')
+        #     buf.seek(0)
+        #     encoded_image = base64.b64encode(buf.read()).decode('utf-8')
+        #     buf.close()
+        # else:
+        #     encoded_image = None
+
+        encoded_image = None  # Make sure there's a default for 'encoded_image'
 
         categories = Expense.objects.values_list('category', flat=True).distinct()
         return render(request, 'tracker/home_expense.html', {
@@ -65,7 +67,7 @@ def home_expense(request):
             'remaining_balance': remaining_balance,
             'budget': budget,
             'warning': warning,
-            'pie_chart': encoded_image,  # Include the pie chart image
+            'pie_chart': encoded_image,  # Set this to None to avoid errors in templates
         })
     else:
         return redirect('index')
