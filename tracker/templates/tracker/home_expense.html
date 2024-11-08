@@ -2,36 +2,36 @@
 <html>
 <head>
     <style>
-        body { 
-            background-image: linear-gradient(to right, #272727, #1e1c1c); 
-            font-family: Arial, sans-serif; 
+        body {
+            background-image: linear-gradient(to right, #272727, #1e1c1c);
+            font-family: Arial, sans-serif;
             color: white;
-            text-align: center; 
+            text-align: center;
         }
 
-        h1 { 
-            color: #1E90FF; 
+        h1 {
+            color: #1E90FF;
         }
 
         .container {
-            max-width: 600px; 
-            margin: 0 auto; 
-            padding: 20px; 
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
-        form, a { 
-            background-color: #333; 
+        form, a {
+            background-color: #333;
             padding: 20px;
-            border-radius: 10px; 
-            display: inline-block; 
-            margin: 20px auto; 
-            width: 100%; 
+            border-radius: 10px;
+            display: inline-block;
+            margin: 20px auto;
+            width: 100%;
         }
 
         label {
-            color: #5F9EA0; 
-            display: block; 
-            margin: 10px 0; 
+            color: #5F9EA0;
+            display: block;
+            margin: 10px 0;
         }
 
         select, button {
@@ -39,7 +39,7 @@
             margin: 10px 0;
             border-radius: 5px;
             border: 1px solid #ccc;
-            background-color: #1E90FF; 
+            background-color: #1E90FF;
             color: white;
             cursor: pointer;
             width: calc(100% - 22px);
@@ -50,7 +50,7 @@
         }
 
         button:hover {
-            background-color: #4682B4; 
+            background-color: #4682B4;
         }
 
         ul {
@@ -61,13 +61,24 @@
         }
 
         a {
-            color: #1E90FF; 
+            color: #1E90FF;
             text-decoration: none;
         }
 
         a:hover {
-            color: #4682B4; 
+            color: #4682B4;
         }
+
+        .warning {
+            color: red;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .pie-chart-container {
+            margin-top: 30px;
+        }
+
     </style>
     <title>Expense Tracker</title>
 </head>
@@ -75,22 +86,63 @@
     <div class="container">
         <h1>Expenses</h1>
         <p>Welcome, {{ request.user.username }}!</p>
-        <form method="get">
-            <label for="category">Filter by Category:</label>
-            <select name="category" id="category">
-                <option value="">All</option>
-                {% for category in categories %}
-                    <option value="{{ category }}">{{ category }}</option>
-                {% endfor %}
-            </select>
-            <button type="submit">Filter</button>
-        </form>
+
+        <!-- Display total income, total expenses, and balance -->
+        <h2>Total Income: ${{ total_income }}</h2>
+        <h2>Total Expenses: ${{ total_expenses }}</h2>
+        <h2>Remaining Balance: ${{ remaining_balance }}</h2>
+
+        <!-- Display warning message if overspending -->
+        {% if warning %}
+            <div class="warning">{{ warning }}</div>
+        {% endif %}
+
+        <!-- Display pie chart if available -->
+        {% if pie_chart_path %}
+            <div class="pie-chart-container">
+                <h2>Expense Distribution</h2>
+                <img src="{{ pie_chart_path|escape }}" alt="Expense Distribution Pie Chart">
+            </div>
+        {% endif %}
+
+<!-- Form to filter expenses by category -->
+<form method="get" style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 20px;">
+    <div style="width: 200px; text-align: center;">
+        <label for="category" style="margin-bottom: 10px; font-weight: bold;">Filter by Category:</label>
+        <select name="category" id="category" style="padding: 10px; border-radius: 5px; width: 100%; background-color: #1E90FF; color: white; border: 1px solid #ccc; text-align-last: center;">
+            <option value="" style="text-align: center;">All</option>
+            {% for category in categories %}
+                <option value="{{ category }}">{{ category }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" style="padding: 10px 20px; width: 200px; border-radius: 5px; background-color: #1E90FF; color: white; border: none;">
+        Filter
+    </button>
+</form>
+
+
+
+
+        <!-- Links to add expense, add income, update budget -->
         <a href="{% url 'add_expense' %}">Add Expense</a>
+        <a href="{% url 'add_income' %}">Add Income</a>
+        <a href="{% url 'update_budget' %}">Update Monthly Budget</a>
+
+        <!-- Export expenses button -->
+<a href="{% url 'export_expenses' %}" style="padding: 10px; margin-top: 10px; border-radius: 5px; background-color: #1E90FF; color: white; text-decoration: none; display: inline-block;">
+    Export Expenses to CSV
+</a>
+
+
+        <!-- Display list of expenses -->
         <ul>
             {% for expense in expenses %}
                 <li>{{ expense.date }} - {{ expense.category }} : ${{ expense.amount }}</li>
             {% endfor %}
         </ul>
+
+        <!-- Logout link -->
         <a href="{% url 'logout' %}">Logout</a>
     </div>
 </body>
