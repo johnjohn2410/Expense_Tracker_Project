@@ -74,7 +74,7 @@
             font-weight: bold;
             margin-top: 20px;
         }
-        
+
         .budget-good {
             color: greenyellow;
             font-weight: bold;
@@ -95,6 +95,16 @@
             margin-top: 30px;
         }
 
+        .checkbox-list {
+            text-align: left;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .checkbox-list label {
+            margin-bottom: 5px;
+        }
+
     </style>
     <title>Expense Tracker</title>
 </head>
@@ -106,16 +116,19 @@
         <!-- Display total income, total expenses, and balance -->
         <h2>Total Income: ${{ total_income }}</h2>
         <h2>Total Expenses: ${{ total_expenses }}</h2>
+        {% if category_filters %}
+            <h2>Current Filtered Expense: ${{ filtered_expenses }}</h2>
+        {% endif %}
         <h2>Remaining Balance: ${{ remaining_balance }}</h2>
 
         <!-- Display warning message if overspending -->
         {% if warning %}
             <div class="warning">{{ warning }}</div>
         {% endif %}
-    
+
         <!-- Displays how much of the budget has been used, hides if budget invalid -->
         {% if budget_used_amount %}
-            <h2>Budget Used: 
+            <h2>Budget Used:
                 <!-- Conditional Coloring-->
                 {% if budget_used_color == 1 %}
                     <span class="budget-warn">{{ budget_used_amount }}%</span>
@@ -127,32 +140,18 @@
             </h2>
         {% endif %}
 
-        <!-- Display pie chart if available -->
-        {% if pie_chart_path %}
-            <div class="pie-chart-container">
-                <h2>Expense Distribution</h2>
-                <img src="{{ pie_chart_path|escape }}" alt="Expense Distribution Pie Chart">
+        <!-- Form to filter expenses by category using checkboxes -->
+        <form method="get" style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 20px;">
+            <div class="checkbox-list">
+                <label style="font-weight: bold;">Filter by Categories:</label>
+                {% for category in categories %}
+                    <label><input type="checkbox" name="category" value="{{ category }}" {% if category in category_filters %}checked{% endif %}> {{ category }}</label>
+                {% endfor %}
             </div>
-        {% endif %}
-
-<!-- Form to filter expenses by category -->
-<form method="get" style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 20px;">
-    <div style="width: 200px; text-align: center;">
-        <label for="category" style="margin-bottom: 10px; font-weight: bold;">Filter by Category:</label>
-        <select name="category" id="category" style="padding: 10px; border-radius: 5px; width: 100%; background-color: #1E90FF; color: white; border: 1px solid #ccc; text-align-last: center;">
-            <option value="" style="text-align: center;">All</option>
-            {% for category in categories %}
-                <option value="{{ category }}">{{ category }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <button type="submit" style="padding: 10px 20px; width: 200px; border-radius: 5px; background-color: #1E90FF; color: white; border: none;">
-        Filter
-    </button>
-</form>
-
-
-
+            <button type="submit" style="padding: 10px 20px; width: 200px; border-radius: 5px; background-color: #1E90FF; color: white; border: none;">
+                Filter
+            </button>
+        </form>
 
         <!-- Links to add expense, add income, update budget -->
         <a href="{% url 'add_expense' %}">Add Expense</a>
@@ -160,10 +159,9 @@
         <a href="{% url 'update_budget' %}">Update Monthly Budget</a>
 
         <!-- Export expenses button -->
-<a href="{% url 'export_expenses' %}" style="padding: 10px; margin-top: 10px; border-radius: 5px; background-color: #1E90FF; color: white; text-decoration: none; display: inline-block;">
-    Export Expenses to CSV
-</a>
-
+        <a href="{% url 'export_expenses' %}" style="padding: 10px; margin-top: 10px; border-radius: 5px; background-color: #1E90FF; color: white; text-decoration: none; display: inline-block;">
+            Export Expenses to CSV
+        </a>
 
         <!-- Display list of expenses -->
         <ul>

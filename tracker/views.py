@@ -11,28 +11,35 @@ from .forms import SignUpForm, LoginForm, ExpenseForm, IncomeForm, BudgetForm
 # from io import BytesIO
 # import base64
 
-# Home page
+# Home page view
 def index(request):
     return render(request, 'tracker/index.html', {})
 
+# Home expense view
 def home_expense(request):
     if request.user.is_authenticated:
-        category = request.GET.get('category')
-        if category:
-            expenses = Expense.objects.filter(category=category, user=request.user)
+        # Get selected categories from request
+        category_filters = request.GET.getlist('category')
+
+        if category_filters:
+            # If categories are selected, filter by those categories
+            expenses = Expense.objects.filter(category__in=category_filters, user=request.user)
         else:
+            # Otherwise, get all expenses
             expenses = Expense.objects.filter(user=request.user)
 
-        total_expenses = sum(exp.amount for exp in expenses)
-        total_income = sum(inc.amount for inc in Income.objects.filter(user=request.user))
+        # Calculate total expenses and filtered expenses
+        total_expenses = Expense.objects.filter(user=request.user).aggregate(total=Sum('amount'))['total'] or 0
+        filtered_expenses = expenses.aggregate(total=Sum('amount'))['total'] or 0
+        total_income = Income.objects.filter(user=request.user).aggregate(total=Sum('amount'))['total'] or 0
         remaining_balance = total_income - total_expenses
 
         # Retrieve user's monthly budget
         user_profile, created = UserProfile.objects.get_or_create(user=request.user)
         budget = user_profile.monthly_budget
-        # Variable for 75% of set budget, used for usage warning
-        budget_check = budget * 3/4
-        # Warning messages about user's budget
+        budget_check = budget * 3 / 4
+
+        # Generate warnings based on budget and spending
         if budget == 0:
             warning = "Warning: Your budget is at 0, please update it"
         elif total_expenses > budget:
@@ -42,56 +49,32 @@ def home_expense(request):
         else:
             warning = None
 
-        # Budget Used Percentage
-        # Error-Checking prevents usage of variable if budget is invalid, dividing by zero is bad
+        # Budget used percentage calculation
         budget_used_color = 0
         if budget <= 0:
             budget_used_amount = None
         else:
             budget_used_amount = int((total_expenses / budget) * 100)
-            # Variable for determining color display in html
             if budget_used_amount < 75:
-                budget_used_color = 0 #good = green
+                budget_used_color = 0  # Good (green)
             elif 100 > budget_used_amount > 75:
-                budget_used_color = 1 #warning = orange
+                budget_used_color = 1  # Warning (orange)
             else:
-                budget_used_color = 2 #bad = red
-
-        # Get categories and prepare data for pie chart
-        # category_totals = expenses.values('category').annotate(total=Sum('amount'))
-        # labels = [item['category'] for item in category_totals if item['total'] > 0]
-        # sizes = [item['total'] for item in category_totals if item['total'] > 0]
-
-        # if sizes:  # Only create a pie chart if there are valid positive values
-        #     # Create the pie chart
-        #     plt.switch_backend('Agg')  # Use Agg backend for non-GUI environments
-        #     fig, ax = plt.subplots(figsize=(6, 6))
-        #     ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
-        #     ax.axis('equal')  # Equal aspect ratio ensures the pie is drawn as a circle.
-
-        #     # Save the chart to a BytesIO buffer
-        #     buf = BytesIO()
-        #     plt.savefig(buf, format='png')
-        #     buf.seek(0)
-        #     encoded_image = base64.b64encode(buf.read()).decode('utf-8')
-        #     buf.close()
-        # else:
-        #     encoded_image = None
-
-        encoded_image = None  # Make sure there's a default for 'encoded_image'
+                budget_used_color = 2  # Bad (red)
 
         categories = Expense.objects.values_list('category', flat=True).distinct()
         return render(request, 'tracker/home_expense.html', {
             'expenses': expenses,
             'categories': categories,
+            'category_filters': category_filters,
             'total_expenses': total_expenses,
+            'filtered_expenses': filtered_expenses,
             'total_income': total_income,
             'remaining_balance': remaining_balance,
             'budget': budget,
             'budget_used_amount': budget_used_amount,
             'budget_used_color': budget_used_color,
             'warning': warning,
-            'pie_chart': encoded_image,  # Set this to None to avoid errors in templates
         })
     else:
         return redirect('index')

@@ -48,3 +48,9 @@ class BudgetForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['monthly_budget']
+
+    def clean_monthly_budget(self):
+        monthly_budget = self.cleaned_data.get('monthly_budget')
+        if monthly_budget is None or monthly_budget < 0:
+            raise forms.ValidationError("Monthly budget must be a non-negative number.")
+        return monthly_budget
