@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Sum
+from django.utils.text import normalize_newlines
+
 from .models import Expense, Income, UserProfile
 from .forms import SignUpForm, LoginForm, ExpenseForm, IncomeForm, BudgetForm
 # import matplotlib.pyplot as plt
@@ -23,17 +25,37 @@ def home_expense(request):
 
         total_expenses = sum(exp.amount for exp in expenses)
         total_income = sum(inc.amount for inc in Income.objects.filter(user=request.user))
+        remaining_balance = total_income - total_expenses
 
         # Retrieve user's monthly budget
         user_profile, created = UserProfile.objects.get_or_create(user=request.user)
         budget = user_profile.monthly_budget
+        # Variable for 75% of set budget, used for usage warning
+        budget_check = budget * 3/4
+        # Warning messages about user's budget
+        if budget == 0:
+            warning = "Warning: Your budget is at 0, please update it"
+        elif total_expenses > budget:
+            warning = "Warning: You are overspending this month!"
+        elif budget > total_expenses > budget_check:
+            warning = "Warning: You are nearing your budget limit for this month!"
+        else:
+            warning = None
 
-        warning = None
-        if total_expenses > budget:
-            warning = "Warning: You are on track to overspend this month!"
-
-        # Calculate remaining balance
-        remaining_balance = total_income - total_expenses
+        # Budget Used Percentage
+        # Error-Checking prevents usage of variable if budget is invalid, dividing by zero is bad
+        budget_used_color = 0
+        if budget <= 0:
+            budget_used_amount = None
+        else:
+            budget_used_amount = int((total_expenses / budget) * 100)
+            # Variable for determining color display in html
+            if budget_used_amount < 75:
+                budget_used_color = 0 #good = green
+            elif 100 > budget_used_amount > 75:
+                budget_used_color = 1 #warning = orange
+            else:
+                budget_used_color = 2 #bad = red
 
         # Get categories and prepare data for pie chart
         # category_totals = expenses.values('category').annotate(total=Sum('amount'))
@@ -66,6 +88,8 @@ def home_expense(request):
             'total_income': total_income,
             'remaining_balance': remaining_balance,
             'budget': budget,
+            'budget_used_amount': budget_used_amount,
+            'budget_used_color': budget_used_color,
             'warning': warning,
             'pie_chart': encoded_image,  # Set this to None to avoid errors in templates
         })

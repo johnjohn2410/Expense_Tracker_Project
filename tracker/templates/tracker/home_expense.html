@@ -74,6 +74,22 @@
             font-weight: bold;
             margin-top: 20px;
         }
+        
+        .budget-good {
+            color: greenyellow;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .budget-warn {
+            color: orange;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .budget-bad {
+            color: red;
+            font-weight: bold;
+            margin-top: 20px;
+        }
 
         .pie-chart-container {
             margin-top: 30px;
@@ -95,6 +111,20 @@
         <!-- Display warning message if overspending -->
         {% if warning %}
             <div class="warning">{{ warning }}</div>
+        {% endif %}
+    
+        <!-- Displays how much of the budget has been used, hides if budget invalid -->
+        {% if budget_used_amount %}
+            <h2>Budget Used: 
+                <!-- Conditional Coloring-->
+                {% if budget_used_color == 1 %}
+                    <span class="budget-warn">{{ budget_used_amount }}%</span>
+                {% elif budget_used_color == 2 %}
+                    <span class="budget-bad">{{ budget_used_amount }}%</span>
+                {% else %}
+                    <span class="budget-good">{{ budget_used_amount }}%</span>
+                {% endif %}
+            </h2>
         {% endif %}
 
         <!-- Display pie chart if available -->
