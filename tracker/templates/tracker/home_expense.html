@@ -166,7 +166,8 @@
         <!-- Display list of expenses -->
         <ul>
             {% for expense in expenses %}
-                <li>{{ expense.date }} - {{ expense.category }} : ${{ expense.amount }}</li>
+                <li>{{ expense.date }} - {{ expense.category }} : ${{ expense.amount }} 
+                    <a href="{% url 'delete_expense' expense.id %}">DELETE</a></li>
             {% endfor %}
         </ul>
 

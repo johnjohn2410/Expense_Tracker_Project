@@ -11,6 +11,9 @@ from .forms import SignUpForm, LoginForm, ExpenseForm, IncomeForm, BudgetForm
 # from io import BytesIO
 # import base64
 
+from decimal import *
+getcontext().prec=2
+
 # Home page view
 def index(request):
     return render(request, 'tracker/index.html', {})
@@ -29,10 +32,18 @@ def home_expense(request):
             expenses = Expense.objects.filter(user=request.user)
 
         # Calculate total expenses and filtered expenses
-        total_expenses = Expense.objects.filter(user=request.user).aggregate(total=Sum('amount'))['total'] or 0
-        filtered_expenses = expenses.aggregate(total=Sum('amount'))['total'] or 0
-        total_income = Income.objects.filter(user=request.user).aggregate(total=Sum('amount'))['total'] or 0
-        remaining_balance = total_income - total_expenses
+        # first add all expenses for the user
+        add_all_expenses = Expense.objects.filter(user=request.user).aggregate(total=Sum('amount'))['total'] or 0
+        # then format the output to avoid excess trailing zeros
+        total_expenses = Decimal(add_all_expenses).quantize(Decimal('.01'))
+        # Similar operations for adding the filtered expenses
+        add_filtered_expenses = (expenses.aggregate(total=Sum('amount'))['total'] or 0)
+        filtered_expenses = Decimal(add_filtered_expenses).quantize(Decimal('.01'))
+        # Income formating
+        add_all_income = Income.objects.filter(user=request.user).aggregate(total=Sum('amount'))['total'] or 0
+        total_income = Decimal(add_all_income).quantize(Decimal('.01'))
+        # Balance formating
+        remaining_balance = Decimal(total_income - total_expenses).quantize(Decimal('.01'))
 
         # Retrieve user's monthly budget
         user_profile, created = UserProfile.objects.get_or_create(user=request.user)
@@ -124,6 +135,16 @@ def add_expense(request):
         else:
             form = ExpenseForm()
         return render(request, 'tracker/add_expense.html', {'form': form})
+    else:
+        return redirect('index')
+
+# Delete expense pseudo-page
+def delete_expense(request, expense_id):
+    # always check for logged-in user, especially when manipulating data
+    if request.user.is_authenticated:
+        expense = Expense.objects.get(pk=expense_id)
+        expense.delete()
+        return redirect('home_expense')
     else:
         return redirect('index')
 
