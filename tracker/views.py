@@ -36,10 +36,10 @@ def home_expense(request):
 
         if category_filters:
             # If categories are selected, filter by those categories
-            expenses = Expense.objects.filter(category__in=category_filters, user=request.user)
+            expenses = Expense.objects.filter(category__in=category_filters, user=request.user).order_by('-date')
         else:
             # Otherwise, get all expenses
-            expenses = Expense.objects.filter(user=request.user)
+            expenses = Expense.objects.filter(user=request.user).order_by('-date')
 
         # Calculate total expenses and filtered expenses
         total_expenses = Expense.objects.filter(user=request.user).aggregate(total=Sum('amount'))['total'] or 0
