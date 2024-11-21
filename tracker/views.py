@@ -42,10 +42,18 @@ def home_expense(request):
             expenses = Expense.objects.filter(user=request.user).order_by('-date')
 
         # Calculate total expenses and filtered expenses
-        total_expenses = Expense.objects.filter(user=request.user).aggregate(total=Sum('amount'))['total'] or 0
-        filtered_expenses = expenses.aggregate(total=Sum('amount'))['total'] or 0
-        total_income = Income.objects.filter(user=request.user).aggregate(total=Sum('amount'))['total'] or 0
-        remaining_balance = total_income - total_expenses
+        # first add all expenses for the user
+        add_all_expenses = Expense.objects.filter(user=request.user).aggregate(total=Sum('amount'))['total'] or 0
+        # then format the output to avoid excess trailing zeros
+        total_expenses = Decimal(add_all_expenses).quantize(Decimal('.01'))
+        # Similar operations for adding the filtered expenses
+        add_filtered_expenses = (expenses.aggregate(total=Sum('amount'))['total'] or 0)
+        filtered_expenses = Decimal(add_filtered_expenses).quantize(Decimal('.01'))
+        # Income formating
+        add_all_income = Income.objects.filter(user=request.user).aggregate(total=Sum('amount'))['total'] or 0
+        total_income = Decimal(add_all_income).quantize(Decimal('.01'))
+        # Balance formating
+        remaining_balance = Decimal(total_income - total_expenses).quantize(Decimal('.01'))
 
         # Retrieve user's monthly budget
         user_profile, created = UserProfile.objects.get_or_create(user=request.user)
