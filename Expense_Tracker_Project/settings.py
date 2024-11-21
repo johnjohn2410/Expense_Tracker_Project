@@ -4,7 +4,7 @@ import os
 
 # Load environment variables from .env file
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(BASE_DIR / "Expense_Tracker_Project" / ".env")
+load_dotenv(BASE_DIR / "clean_repo" / "Expense_Tracker_Project" / ".env")
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
@@ -59,7 +59,7 @@ DATABASES = {
 }
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+#STATICFILES_DIRS = [BASE_DIR / 'static'] no static files so this will stay commented out for now
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
