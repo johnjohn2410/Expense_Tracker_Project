@@ -1,7 +1,81 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <style>
+        body { 
+            background-image: linear-gradient(to right, #272727, #1e1c1c); 
+            font-family: Arial, sans-serif; 
+            color: white;
+            text-align: center; 
+        }
+
+        h1 { 
+            text-align: center;
+            color: #1E90FF; 
+        }
+
+        .container {
+            max-width: 600px; 
+            margin: 0 auto; 
+            padding: 20px; 
+        }
+
+        form, a { 
+            background-color: #333; 
+            padding: 20px;
+            border-radius: 10px; 
+            display: inline-block; 
+            margin: 20px auto; 
+            width: 100%; 
+        }
+
+        label {
+            color: #5F9EA0; 
+            display: block; 
+            margin: 10px 0; 
+        }
+
+        select, button {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #1E90FF; 
+            color: white;
+            cursor: pointer;
+            width: calc(100% - 22px);
+        }
+
+        button {
+            border: none;
+        }
+
+        button:hover {
+            background-color: #4682B4; 
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            text-align: left; 
+            margin: 20px 0; 
+        }
+
+        a {
+            color: #1E90FF; 
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #4682B4; 
+        }
+    </style>
+</head>
 <body>
-    <h2>Email Verification Sent</h2>
-    <p>An email verification link has been sent to your email address. Please check your inbox to activate your account.</p>
+    <div class="container">
+        <h2>Email Verification Sent</h2>
+        <p>An email verification link has been sent to your email address. Please check your inbox to activate your account.</p>
+        <a href="{% url 'index' %}"><button>CONTINUE</button></a>
+    </div>
 </body>
 </html>
