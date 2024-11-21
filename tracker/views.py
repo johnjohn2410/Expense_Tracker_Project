@@ -83,7 +83,7 @@ def home_expense(request):
             else:
                 budget_used_color = 2  # Bad (red)
 
-        categories = Expense.objects.values_list('category', flat=True).distinct()
+        categories = Expense.objects.filter(user=request.user).values_list('category', flat=True).distinct()
         return render(request, 'tracker/home_expense.html', {
             'expenses': expenses,
             'categories': categories,
