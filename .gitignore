@@ -14,3 +14,6 @@ django_env/
 
 # PyCharm
 .idea/
+
+# Environment variables
+.env
