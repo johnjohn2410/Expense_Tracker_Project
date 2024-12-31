@@ -1,4 +1,4 @@
-💸 **Expense Tracker Project** 💸
+💸 **Expense Tracker Project**💸
 
 This is a web-based expense tracker built with Django. It allows users to add, view, and categorize expenses in a user-friendly interface.
 
