@@ -2,7 +2,7 @@
 
 A comprehensive, production-ready expense tracking application built with Django, featuring advanced financial management capabilities, secure API endpoints, and enterprise-grade infrastructure.
 
-## 🚀 Features
+## Features
 
 ### Core Functionality
 - **Expense & Income Tracking**: Comprehensive transaction management with categorization
@@ -21,7 +21,33 @@ A comprehensive, production-ready expense tracking application built with Django
 - **Scalability**: PostgreSQL database, Redis caching, and S3-compatible storage
 - **CI/CD**: GitHub Actions pipeline with automated testing and deployment
 
-## 🏗️ Architecture
+## Screenshots
+
+### Authentication Pages
+![Login Page](screenshots/login-page.png)
+*Modern login page with animated background and floating labels*
+
+![Signup Page](screenshots/signup-page.png)
+*Beautiful signup form with dynamic background and particle effects*
+
+### Dashboard & Forms
+![Dashboard](screenshots/dashboard.png)
+*Main dashboard with expense overview and quick actions*
+
+![Add Expense Form](screenshots/add-expense.png)
+*Modern expense form with Bootstrap floating labels*
+
+![Add Income Form](screenshots/add-income.png)
+*Income tracking form with clean, professional design*
+
+![Budget Management](screenshots/budget-management.png)
+*Budget creation and management interface*
+
+### Mobile Responsive Design
+![Mobile Dashboard](screenshots/mobile-dashboard.png)
+*Fully responsive design that works on all devices*
+
+## Architecture
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
@@ -43,7 +69,7 @@ A comprehensive, production-ready expense tracking application built with Django
                        └─────────────────┘
 ```
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 - **Backend**: Django 5.1 + Django REST Framework
 - **Database**: PostgreSQL (production), SQLite (development)
@@ -57,14 +83,14 @@ A comprehensive, production-ready expense tracking application built with Django
 - **Email**: Brevo (free tier - 300 emails/day)
 - **Containerization**: Docker + Docker Compose
 
-## 📋 Prerequisites
+## Prerequisites
 
 - Python 3.11+
 - PostgreSQL 15+
 - Redis 7+
 - Docker & Docker Compose (optional)
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Option 1: Docker Compose (Recommended)
 
@@ -151,7 +177,7 @@ A comprehensive, production-ready expense tracking application built with Django
    python manage.py runserver
    ```
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables
 
@@ -196,7 +222,7 @@ The application includes comprehensive security features:
 - **CSRF Protection**: Cross-site request forgery protection
 - **Secure Cookies**: HttpOnly and Secure flags
 
-## 📚 API Documentation
+## API Documentation
 
 ### Available Endpoints
 
@@ -231,7 +257,7 @@ curl -X POST \
      http://localhost:8000/api/transactions/
 ```
 
-## 🔄 Background Tasks
+## Background Tasks
 
 The application uses Celery for background processing:
 
@@ -254,7 +280,7 @@ celery -A Expense_Tracker_Project monitor
 celery -A Expense_Tracker_Project beat --loglevel=info
 ```
 
-## 🧪 Testing
+## Testing
 
 ### Run Tests
 
@@ -281,7 +307,7 @@ The application maintains >85% test coverage on core functionality:
 - Background tasks and services
 - Security middleware and permissions
 
-## 🚀 Deployment
+## Deployment
 
 ### Production Deployment Options
 
@@ -317,7 +343,7 @@ The application maintains >85% test coverage on core functionality:
 - [ ] Configure logging
 - [ ] Set up health checks
 
-## 📊 Monitoring & Observability
+## Monitoring & Observability
 
 ### Health Checks
 
@@ -349,7 +375,7 @@ Sentry integration for production error monitoring:
 - Release tracking
 - User feedback collection
 
-## 🔒 Security Features
+## Security Features
 
 ### Authentication & Authorization
 
@@ -367,7 +393,7 @@ Sentry integration for production error monitoring:
 - **Data export/import** with user control
 - **Automatic data cleanup** for old records
 
-## 📱 Mobile & API Support
+## Mobile & API Support
 
 ### RESTful API
 
@@ -384,7 +410,7 @@ Sentry integration for production error monitoring:
 - **Offline support** with local storage
 - **Push notifications** for budget alerts
 
-## 🤝 Contributing
+## Contributing
 
 ### Development Setup
 
@@ -403,11 +429,11 @@ Sentry integration for production error monitoring:
 - **Documentation**: Update docs for new features
 - **Security**: Follow OWASP guidelines
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🆘 Support
+## Support
 
 ### Getting Help
 
@@ -423,9 +449,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Email not sending**: Check Brevo credentials and SMTP settings
 - **File upload failures**: Verify S3 storage configuration
 
-## 🗺️ Roadmap
+## Roadmap
 
-### Phase 1 (Current) - Production Foundation ✅
+### Phase 1 (Current) - Production Foundation
 - [x] Enhanced data models and API
 - [x] Security middleware and authentication
 - [x] Background task processing
@@ -448,4 +474,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Built with ❤️ using Django and modern web technologies**
+**Built with Django and modern web technologies**
