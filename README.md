@@ -88,6 +88,11 @@ A comprehensive, production-ready expense tracking application built with Django
 
 ## Prerequisites
 
+### For Simple Local Development
+- Python 3.11+
+- Git
+
+### For Full Production Setup
 - Python 3.11+
 - PostgreSQL 15+
 - Redis 7+
@@ -95,7 +100,53 @@ A comprehensive, production-ready expense tracking application built with Django
 
 ## Quick Start
 
-### Option 1: Docker Compose (Recommended)
+### Option 1: Simple Local Development (Recommended for First Time)
+
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd Expense_Tracker_Project
+   ```
+
+2. **Set up virtual environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. **Install development dependencies**
+   ```bash
+   pip install -r requirements-dev.txt
+   ```
+
+4. **Create logs directory**
+   ```bash
+   mkdir -p logs
+   ```
+
+5. **Run migrations**
+   ```bash
+   python manage.py migrate
+   ```
+
+6. **Create a superuser (optional)**
+   ```bash
+   python manage.py createsuperuser
+   ```
+
+7. **Run the development server**
+   ```bash
+   python manage.py runserver
+   ```
+
+8. **Access the application**
+   - Web App: http://127.0.0.1:8000
+   - Login: http://127.0.0.1:8000/login/
+   - Signup: http://127.0.0.1:8000/signup/
+
+**Note**: The application automatically uses simplified settings (`settings-simple`) for local development, which includes SQLite database and disabled production features for easier setup.
+
+### Option 2: Docker Compose (Production-like Environment)
 
 1. **Clone the repository**
    ```bash
@@ -111,17 +162,17 @@ A comprehensive, production-ready expense tracking application built with Django
 
 3. **Start services**
    ```bash
-   docker-compose up -d
+   docker compose up -d
    ```
 
 4. **Run migrations**
    ```bash
-   docker-compose exec web python manage.py migrate
+   docker compose exec web python manage.py migrate
    ```
 
 5. **Create superuser**
    ```bash
-   docker-compose exec web python manage.py createsuperuser
+   docker compose exec web python manage.py createsuperuser
    ```
 
 6. **Access the application**
@@ -129,7 +180,7 @@ A comprehensive, production-ready expense tracking application built with Django
    - API Docs: http://localhost:8000/api/docs/
    - Admin: http://localhost:8000/admin/
 
-### Option 2: Local Development
+### Option 3: Full Production Setup
 
 1. **Set up virtual environment**
    ```bash
@@ -137,7 +188,7 @@ A comprehensive, production-ready expense tracking application built with Django
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
-2. **Install dependencies**
+2. **Install all dependencies**
    ```bash
    pip install -r requirements.txt
    ```
