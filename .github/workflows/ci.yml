@@ -10,6 +10,10 @@ env:
   PYTHON_VERSION: '3.11'
   DJANGO_VERSION: '5.1.1'
 
+permissions:
+  contents: read
+  security-events: write
+
 jobs:
   # Linting and Code Quality
   lint:
@@ -124,11 +128,6 @@ jobs:
   # Security Scanning
   security:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      security-events: write
-      actions: read
-      pull-request: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
