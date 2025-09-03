@@ -261,6 +261,22 @@
                 {% endfor %}
             {% endif %}
 
+            <!-- Display Form Errors -->
+            {% if form.errors %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    <strong>Please correct the following errors:</strong>
+                    <ul class="mb-0 mt-2">
+                        {% for field_name, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <li>{{ field_name|title }}: {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endif %}
+
             <form method="post">
                 {% csrf_token %}
 
@@ -414,6 +430,21 @@
         .form-floating.is-filled > label {
             transform: scale(0.85) translateY(-0.6rem) translateX(0.15rem);
             opacity: 0.75;
+        }
+        
+        /* Fix for SelectMultiple widget */
+        .form-select[multiple] {
+            height: auto;
+            min-height: 120px;
+        }
+        
+        /* Better spacing for budget form */
+        .form-floating {
+            margin-bottom: 1.5rem;
+        }
+        
+        .row {
+            margin-bottom: 0.5rem;
         }
     </style>
 </body>

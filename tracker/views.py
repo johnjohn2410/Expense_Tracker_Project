@@ -92,11 +92,35 @@ def home_expense(request):
     
     try:
         user_profile = UserProfile.objects.get(user=user)
-        monthly_budget = user_profile.monthly_budget if hasattr(user_profile, 'monthly_budget') else 0
     except UserProfile.DoesNotExist:
-        monthly_budget = 0
+        user_profile = UserProfile.objects.create(user=user)
     
-    budget_used_percentage = (total_expenses / monthly_budget * 100) if monthly_budget > 0 else 0
+    # Get the current month's budget
+    try:
+        # Debug: Check all budgets for this user
+        all_budgets = Budget.objects.filter(user=user, is_active=True)
+        print(f"All budgets for user {user.username}: {list(all_budgets.values('name', 'amount', 'period', 'start_date', 'end_date'))}")
+        
+        current_budget = Budget.objects.filter(
+            user=user,
+            period='monthly',
+            start_date__lte=today,
+            end_date__gte=today,
+            is_active=True
+        ).first()
+        
+        if current_budget:
+            monthly_budget = current_budget.amount
+            budget_used_percentage = (total_expenses / monthly_budget * 100) if monthly_budget > 0 else 0
+            print(f"Found current budget: {current_budget.name}, Amount: {current_budget.amount}")
+        else:
+            monthly_budget = 0
+            budget_used_percentage = 0
+            print(f"No current budget found for user {user.username}")
+    except Exception as e:
+        print(f"Budget query error: {e}")
+        monthly_budget = 0
+        budget_used_percentage = 0
     
     context = {
         'expenses': expenses,
@@ -175,16 +199,23 @@ def user_logout(request):
 @login_required
 def add_expense(request):
     if request.method == 'POST':
-        form = ExpenseForm(request.POST, user=request.user)
+        form = ExpenseForm(request.user, request.POST)
         if form.is_valid():
-            expense = form.save(commit=False)
-            expense.user = request.user
-            expense.transaction_type = 'expense'
-            expense.save()
+            form.save()
             messages.success(request, 'Expense added successfully!')
             return redirect('home_expense')
+        else:
+            print("Form errors:", form.errors)
+            print("Form non-field errors:", form.non_field_errors())
+            for field_name, errors in form.errors.items():
+                print(f"Field {field_name} errors: {errors}")
+            messages.error(request, 'Please correct the errors below.')
     else:
-        form = ExpenseForm(user=request.user)
+        form = ExpenseForm(request.user)
+        print("Form fields:", form.fields.keys())
+        print("Category choices:", form.fields['category'].choices)
+        print("Currency choices:", form.fields['currency'].choices)
+        print("Account choices:", form.fields['account'].choices)
     return render(request, 'tracker/add_expense.html', {'form': form})
 
 
@@ -204,16 +235,16 @@ def delete_expense(request, expense_id):
 @login_required
 def add_income(request):
     if request.method == 'POST':
-        form = IncomeForm(request.POST, user=request.user)
+        form = IncomeForm(request.user, request.POST)
         if form.is_valid():
-            income = form.save(commit=False)
-            income.user = request.user
-            income.transaction_type = 'income'
-            income.save()
+            form.save()
             messages.success(request, 'Income added successfully!')
             return redirect('home_expense')
+        else:
+            print("Form errors:", form.errors)
+            messages.error(request, 'Please correct the errors below.')
     else:
-        form = IncomeForm(user=request.user)
+        form = IncomeForm(request.user)
     return render(request, 'tracker/add_income.html', {'form': form})
 
 
@@ -243,15 +274,24 @@ def update_budget(request):
         user_profile = UserProfile.objects.create(user=request.user)
     
     if request.method == 'POST':
-        form = BudgetForm(request.POST, user=request.user)
+        form = BudgetForm(request.user, request.POST)
         if form.is_valid():
-            budget = form.save(commit=False)
-            budget.user = request.user
-            budget.save()
-            form.save_m2m()
+            obj = form.save(commit=False)
+            obj.user = request.user
+            obj.save()
+            form.save_m2m()  # IMPORTANT for ManyToMany
+            
+            # Debug: Print what was saved
+            print(f"Budget saved: {obj.name}, Amount: {obj.amount}, Period: {obj.period}")
+            print(f"Start Date: {obj.start_date}, End Date: {obj.end_date}")
+            print(f"User: {obj.user.username}")
+            
             messages.success(request, 'Budget updated successfully!')
             return redirect('home_expense')
+        else:
+            print("Budget form errors:", form.errors)
+            messages.error(request, 'Please correct the errors below.')
     else:
-        form = BudgetForm(user=request.user)
+        form = BudgetForm(request.user)
     
     return render(request, 'tracker/update_budget.html', {'form': form})

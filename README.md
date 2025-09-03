@@ -23,29 +23,32 @@ A comprehensive, production-ready expense tracking application built with Django
 
 ## Screenshots
 
-### Authentication Pages
-![Login Page](screenshots/login-page.png)
-*Modern login page with animated background and floating labels*
+*Visual showcase of the application's modern interface and functionality.*
 
-![Signup Page](screenshots/signup-page.png)
-*Beautiful signup form with dynamic background and particle effects*
+### Dashboard Overview
+![Dashboard Overview](screenshots/dashboard.png)
+*The main dashboard displays a personalized welcome message, key financial statistics in modern cards, and a budget progress bar showing spending against monthly limits. Features a clean, professional design with the signature black and blue color scheme.*
 
-### Dashboard & Forms
-![Dashboard](screenshots/dashboard.png)
-*Main dashboard with expense overview and quick actions*
+### Dashboard Analytics
+![Dashboard Analytics](screenshots/lower-dashboard.png)
+*The lower dashboard section showcases interactive Chart.js visualizations including pie charts for expense categories, monthly spending trends, and income vs. expense comparisons. Provides comprehensive financial insights at a glance.*
 
-![Add Expense Form](screenshots/add-expense.png)
-*Modern expense form with Bootstrap floating labels*
+### User Authentication
+![Login Page](screenshots/login.png)
+*Modern login interface featuring floating label forms, animated background with expense tracking themes, and the signature black and blue color scheme. Includes smooth transitions and professional styling.*
 
-![Add Income Form](screenshots/add-income.png)
-*Income tracking form with clean, professional design*
+![Signup Page](screenshots/signup.png)
+*Registration page with animated background video/GIF, floating label forms, and modern UI elements. The design maintains consistency with the overall application theme while providing an engaging user experience.*
 
-![Budget Management](screenshots/budget-management.png)
-*Budget creation and management interface*
+### Financial Management
+![Add Expense](screenshots/add-expense.png)
+*Expense entry form with Bootstrap 5 floating labels, comprehensive field validation, and intuitive layout. Includes fields for amount, currency, description, category, account, date, merchant, and optional notes.*
 
-### Mobile Responsive Design
-![Mobile Dashboard](screenshots/mobile-dashboard.png)
-*Fully responsive design that works on all devices*
+![Add Income](screenshots/add-income.png)
+*Income tracking form mirroring the expense form design for consistency. Features the same modern UI elements and validation patterns to ensure a unified user experience.*
+
+![Budget Management](screenshots/budget.png)
+*Budget configuration interface allowing users to set spending limits, define periods, select categories, and assign multiple accounts. Features a responsive grid layout and multi-select functionality for comprehensive budget planning.*
 
 ## Architecture
 
