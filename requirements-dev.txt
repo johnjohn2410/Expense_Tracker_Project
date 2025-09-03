@@ -8,8 +8,10 @@ django-axes==6.4.0
 django-csp==3.7
 whitenoise==6.6.0
 sentry-sdk==1.40.4
-python-dotenv==1.0.1
+python-dotenv==1.0.0
 Pillow==11.0.0
 pytz==2024.2
 pytest==8.0.2
 pytest-django==4.8.0
+pytest-cov==4.1.0
+coverage==7.4.0

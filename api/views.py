@@ -3,7 +3,7 @@ from rest_framework import viewsets, permissions, filters, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
-from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 from django.db.models import Sum, Q, F
 from django.utils import timezone
 from datetime import datetime, timedelta
@@ -44,8 +44,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
     pagination_class = StandardResultsSetPagination
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['is_system', 'is_active', 'parent']
+    filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['name', 'description']
     ordering_fields = ['name', 'created_at']
     ordering = ['name']
@@ -76,8 +75,7 @@ class AccountViewSet(viewsets.ModelViewSet):
     serializer_class = AccountSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
     pagination_class = StandardResultsSetPagination
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['account_type', 'is_active', 'currency']
+    filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['name', 'institution', 'notes']
     ordering_fields = ['name', 'balance', 'created_at']
     ordering = ['name']
@@ -115,8 +113,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
     serializer_class = TransactionSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
     pagination_class = StandardResultsSetPagination
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['transaction_type', 'category', 'account', 'currency', 'date']
+    filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['description', 'notes', 'merchant']
     ordering_fields = ['date', 'amount', 'created_at']
     ordering = ['-date']
@@ -211,8 +208,7 @@ class BudgetViewSet(viewsets.ModelViewSet):
     serializer_class = BudgetSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
     pagination_class = StandardResultsSetPagination
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['period', 'is_active', 'currency']
+    filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['name', 'description']
     ordering_fields = ['name', 'amount', 'created_at']
     ordering = ['name']
@@ -241,8 +237,7 @@ class BudgetPeriodViewSet(viewsets.ModelViewSet):
     serializer_class = BudgetPeriodSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
     pagination_class = StandardResultsSetPagination
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['budget', 'start_date', 'end_date']
+    filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['notes']
     ordering_fields = ['start_date', 'end_date', 'created_at']
     ordering = ['-start_date']
@@ -256,8 +251,7 @@ class RuleViewSet(viewsets.ModelViewSet):
     serializer_class = RuleSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
     pagination_class = StandardResultsSetPagination
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['rule_type', 'is_active', 'priority']
+    filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['pattern', 'description']
     ordering_fields = ['priority', 'created_at']
     ordering = ['-priority']
@@ -286,8 +280,7 @@ class AttachmentViewSet(viewsets.ModelViewSet):
     serializer_class = AttachmentSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
     pagination_class = StandardResultsSetPagination
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['file_type', 'transaction']
+    filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['filename', 'description']
     ordering_fields = ['filename', 'file_size', 'created_at']
     ordering = ['-created_at']
@@ -311,8 +304,7 @@ class ImportViewSet(viewsets.ModelViewSet):
     serializer_class = ImportSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
     pagination_class = StandardResultsSetPagination
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['source', 'status']
+    filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['filename', 'notes']
     ordering_fields = ['created_at', 'total_records']
     ordering = ['-created_at']
