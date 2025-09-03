@@ -56,6 +56,8 @@ jobs:
   # Testing
   test:
     runs-on: ubuntu-latest
+    env:
+      DJANGO_SETTINGS_MODULE: Expense_Tracker_Project.settings_simple
     services:
       postgres:
         image: postgres:15
@@ -106,7 +108,6 @@ jobs:
           echo "DATABASE_URL=postgres://postgres:postgres@localhost:5432/expense_tracker_test" >> .env
           echo "REDIS_URL=redis://localhost:6379/0" >> .env
           echo "SECRET_KEY=test-secret-key-for-ci" >> .env
-          echo "DJANGO_SETTINGS_MODULE=Expense_Tracker_Project.settings-simple" >> .env
           echo "DEBUG=True" >> .env
       
       - name: Run database migrations
