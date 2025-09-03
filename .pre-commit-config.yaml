@@ -1,0 +1,19 @@
+repos:
+  - repo: https://github.com/psf/black
+    rev: 25.1.0
+    hooks: [{id: black}]
+  - repo: https://github.com/PyCQA/isort
+    rev: 6.0.1
+    hooks: [{id: isort, args: ["--profile", "black"]}]
+  - repo: https://github.com/PyCQA/flake8
+    rev: 7.1.1
+    hooks:
+      - id: flake8
+        additional_dependencies:
+          - flake8-bugbear==24.4.26
+          - flake8-comprehensions==3.14.0
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.9
+    hooks:
+      - id: bandit
+        args: ["-c", ".bandit"]

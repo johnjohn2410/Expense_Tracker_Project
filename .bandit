@@ -1,0 +1,2 @@
+skips: B101
+exclude: tests,*/migrations/*,manage.py,Expense_Tracker_Project/settings-simple.py
