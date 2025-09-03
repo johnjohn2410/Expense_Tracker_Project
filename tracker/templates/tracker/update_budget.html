@@ -1,69 +1,420 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Update Monthly Budget</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Budget - Expense Tracker</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+
     <style>
-        body, html {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(#2c2c2c, #1c1c1c);
-            font-family: Arial, sans-serif;
-            color: white;
+        :root {
+            --primary-color: #1e40af;
+            --secondary-color: #1e3a8a;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --dark-color: #000000;
+            --light-color: #f8fafc;
         }
 
-        .container {
-            background-color: #333;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        body {
+            background: #000000;
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .navbar {
+            background: #1e40af !important;
+            border-bottom: 2px solid #1e3a8a;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: white !important;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: white !important;
+            transform: translateY(-2px);
+        }
+
+        .main-container {
+            padding: 2rem 0;
+        }
+
+        .form-card {
+            background: #ffffff;
+            border: 2px solid #1e40af;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(30, 64, 175, 0.2);
+            padding: 2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .form-header {
             text-align: center;
+            margin-bottom: 2rem;
         }
 
-        h2 {
-            color: #1E90FF;
+        .form-header h2 {
+            color: #1e40af;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
         }
 
-        form {
-            margin: 20px 0;
+        .form-header p {
+            color: #374151;
+            font-size: 1.1rem;
         }
 
-        label {
-            color: #5F9EA0;
+        .form-label {
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 0.5rem;
         }
 
-        input, button {
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            background-color: #1E90FF;
-            color: white;
+        .form-control, .form-select {
+            border: 2px solid #d1d5db;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #1e40af;
+            box-shadow: 0 0 0 0.2rem rgba(30, 64, 175, 0.25);
+            outline: none;
+        }
+
+        .btn-primary {
+            background: #d97706;
+            border: none;
+            border-radius: 12px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
             width: 100%;
-            max-width: 300px;
         }
 
-        button {
-            background-color: #1E90FF;
-            cursor: pointer;
+        .btn-primary:hover {
+            background: #b45309;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(217, 119, 6, 0.3);
         }
 
-        button:hover {
-            background-color: #4682B4;
+        .btn-secondary {
+            background: #374151;
+            border: none;
+            border-radius: 12px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-secondary:hover {
+            background: #1f2937;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(55, 65, 81, 0.3);
+        }
+
+        .form-floating {
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Floating label: use Bootstrap's sizing and triggers */
+        .form-floating > .form-control,
+        .form-floating > .form-select {
+            height: calc(3.5rem + 2px);
+            padding: 1rem 0.75rem;
+        }
+        
+        .form-floating > textarea.form-control {
+            min-height: calc(3.5rem + 2px);
+            height: auto;
+            padding: 1rem 0.75rem;
+        }
+        
+        .form-floating > .form-select {
+            padding-top: 1.625rem;   /* room for label */
+            padding-bottom: 0.625rem;
+        }
+        
+        .form-floating > label {
+            transform-origin: left top;
+            transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
+        }
+        
+        /* Float when focused or when there's content */
+        .form-floating > .form-control:focus ~ label,
+        .form-floating > .form-control:not(:placeholder-shown) ~ label,
+        .form-floating > textarea.form-control:focus ~ label,
+        .form-floating > textarea.form-control:not(:placeholder-shown) ~ label,
+        .form-floating > .form-select:focus ~ label,
+        .form-floating > .form-select:valid ~ label {
+            transform: scale(0.85) translateY(-0.6rem) translateX(0.15rem);
+            opacity: 0.75;
+        }
+        
+        /* Keep placeholder present (needed for :placeholder-shown) but invisible */
+        .form-floating > .form-control::placeholder,
+        .form-floating > textarea.form-control::placeholder {
+            color: transparent;
+        }
+        
+        /* Special handling for currency field (3 character limit) */
+        .form-floating > .form-control[maxlength="3"] {
+            text-transform: uppercase;
+            font-family: monospace;
+            letter-spacing: 0.1em;
+        }
+
+        .alert {
+            border-radius: 12px;
+            border: none;
+            font-weight: 500;
+        }
+
+        .alert-danger {
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            color: #dc2626;
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            color: #16a34a;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Update Monthly Budget</h2>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Update Budget</button>
-        </form>
-        <a href="{% url 'home_expense' %}" style="color: #1E90FF;">Back to Home</a>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home_expense' %}">
+                <i class="bi bi-wallet2 me-2"></i>Expense Tracker
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home_expense' %}">
+                            <i class="bi bi-house me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'add_expense' %}">
+                            <i class="bi bi-plus-circle me-1"></i>Add Expense
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'add_income' %}">
+                            <i class="bi bi-cash-coin me-1"></i>Add Income
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'update_budget' %}">
+                            <i class="bi bi-pie-chart me-1"></i>Budget
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">
+                            <i class="bi bi-box-arrow-right me-1"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container main-container">
+        <div class="form-card">
+            <div class="form-header">
+                <h2><i class="bi bi-pie-chart text-warning me-2"></i>Update Budget</h2>
+                <p>Set your financial goals and track your spending limits</p>
+            </div>
+
+            <!-- Display Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        <i class="bi bi-info-circle me-2"></i>{{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            {{ form.name }}
+                            <label for="{{ form.name.id_for_label }}">
+                                <i class="bi bi-tag me-1"></i>Budget Name
+                            </label>
+                            {% if form.name.errors %}
+                                <div class="text-danger small mt-1">{{ form.name.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            {{ form.amount }}
+                            <label for="{{ form.amount.id_for_label }}">
+                                <i class="bi bi-currency-dollar me-1"></i>Amount
+                            </label>
+                            {% if form.amount.errors %}
+                                <div class="text-danger small mt-1">{{ form.amount.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            {{ form.currency }}
+                            <label for="{{ form.currency.id_for_label }}">
+                                <i class="bi bi-globe me-1"></i>Currency
+                            </label>
+                            {% if form.currency.errors %}
+                                <div class="text-danger small mt-1">{{ form.currency.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            {{ form.period }}
+                            <label for="{{ form.period.id_for_label }}">
+                                <i class="bi bi-calendar-week me-1"></i>Period
+                            </label>
+                            {% if form.period.errors %}
+                                <div class="text-danger small mt-1">{{ form.period.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            {{ form.start_date }}
+                            <label for="{{ form.start_date.id_for_label }}">
+                                <i class="bi bi-calendar-event me-1"></i>Start Date
+                            </label>
+                            {% if form.start_date.errors %}
+                                <div class="text-danger small mt-1">{{ form.start_date.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            {{ form.end_date }}
+                            <label for="{{ form.end_date.id_for_label }}">
+                                <i class="bi bi-calendar-check me-1"></i>End Date
+                            </label>
+                            {% if form.end_date.errors %}
+                                <div class="text-danger small mt-1">{{ form.end_date.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            {{ form.category }}
+                            <label for="{{ form.category.id_for_label }}">
+                                <i class="bi bi-tags me-1"></i>Category
+                            </label>
+                            {% if form.category.errors %}
+                                <div class="text-danger small mt-1">{{ form.category.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            {{ form.accounts }}
+                            <label for="{{ form.accounts.id_for_label }}">
+                                <i class="bi bi-bank me-1"></i>Accounts
+                            </label>
+                            {% if form.accounts.errors %}
+                                <div class="text-danger small mt-1">{{ form.accounts.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-3">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save me-2"></i>Update Budget
+                    </button>
+                    <a href="{% url 'home_expense' %}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left me-2"></i>Back to Dashboard
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Set default dates
+        document.addEventListener('DOMContentLoaded', function() {
+            const startDateField = document.getElementById('{{ form.start_date.id_for_label }}');
+            const endDateField = document.getElementById('{{ form.end_date.id_for_label }}');
+            
+            if (startDateField && !startDateField.value) {
+                const today = new Date();
+                const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+                startDateField.value = startOfMonth.toISOString().split('T')[0];
+            }
+            
+            if (endDateField && !endDateField.value) {
+                const today = new Date();
+                const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+                endDateField.value = endOfMonth.toISOString().split('T')[0];
+            }
+        });
+        
+        // Safari/date edge case helper for floating labels
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.form-floating input, .form-floating textarea, .form-floating select')
+                .forEach(el => {
+                    const wrap = el.closest('.form-floating');
+                    const toggle = () => wrap && wrap.classList.toggle('is-filled', !!el.value);
+                    ['input','change'].forEach(evt => el.addEventListener(evt, toggle));
+                    toggle();
+                });
+        });
+    </script>
+    
+    <style>
+        .form-floating.is-filled > label {
+            transform: scale(0.85) translateY(-0.6rem) translateX(0.15rem);
+            opacity: 0.75;
+        }
+    </style>
 </body>
 </html>

@@ -1,96 +1,609 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Expense Tracker</title>
+    {% load static %}
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+
     <style>
-        body, html {
+        :root {
+            --primary-color: #1e40af;
+            --secondary-color: #1e3a8a;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --dark-color: #000000;
+            --light-color: #f8fafc;
+        }
+
+        body {
+            background: #000000;
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
             height: 100%;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient( #2c2c2c, #1c1c1c);
-            font-family: Arial, sans-serif;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.5;
         }
 
-        .container {
-            background-color: #333;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.55) 0%, rgba(30, 64, 175, 0.35) 100%);
+            z-index: -1;
+        }
+
+        .animated-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(45deg, #000000, #1e40af, #000000, #1e3a8a);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .floating-icons {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .floating-icon {
+            position: absolute;
+            color: rgba(30, 64, 175, 0.6);
+            font-size: 2.5rem;
+            animation: float 8s ease-in-out infinite;
+            text-shadow: 0 0 20px rgba(30, 64, 175, 0.8);
+        }
+
+        .floating-icon:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+            animation-duration: 6s;
+        }
+
+        .floating-icon:nth-child(2) {
+            top: 20%;
+            right: 15%;
+            animation-delay: 2s;
+            animation-duration: 7s;
+        }
+
+        .floating-icon:nth-child(3) {
+            bottom: 30%;
+            left: 20%;
+            animation-delay: 4s;
+            animation-duration: 8s;
+        }
+
+        .floating-icon:nth-child(4) {
+            bottom: 20%;
+            right: 10%;
+            animation-delay: 1s;
+            animation-duration: 6.5s;
+        }
+
+        .floating-icon:nth-child(5) {
+            top: 50%;
+            left: 5%;
+            animation-delay: 3s;
+            animation-duration: 7.5s;
+        }
+
+        .floating-icon:nth-child(6) {
+            top: 60%;
+            right: 5%;
+            animation-delay: 5s;
+            animation-duration: 6.8s;
+        }
+
+        .floating-icon:nth-child(7) {
+            top: 30%;
+            left: 50%;
+            animation-delay: 1.5s;
+            animation-duration: 7.2s;
+        }
+
+        .floating-icon:nth-child(8) {
+            bottom: 10%;
+            left: 50%;
+            animation-delay: 2.5s;
+            animation-duration: 6.3s;
+        }
+
+        .floating-icon:nth-child(9) {
+            top: 15%;
+            left: 50%;
+            animation-delay: 0.5s;
+            animation-duration: 6.7s;
+        }
+
+        .floating-icon:nth-child(10) {
+            bottom: 40%;
+            right: 20%;
+            animation-delay: 3.5s;
+            animation-duration: 7.8s;
+        }
+
+        .floating-icon:nth-child(11) {
+            top: 70%;
+            left: 30%;
+            animation-delay: 1.8s;
+            animation-duration: 6.4s;
+        }
+
+        .floating-icon:nth-child(12) {
+            bottom: 60%;
+            right: 30%;
+            animation-delay: 4.2s;
+            animation-duration: 7.1s;
+        }
+
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0px) rotate(0deg) scale(1); 
+                opacity: 0.6; 
+            }
+            25% { 
+                transform: translateY(-15px) rotate(90deg) scale(1.1); 
+                opacity: 0.8; 
+            }
+            50% { 
+                transform: translateY(-25px) rotate(180deg) scale(1.2); 
+                opacity: 1.0; 
+            }
+            75% { 
+                transform: translateY(-15px) rotate(270deg) scale(1.1); 
+                opacity: 0.8; 
+            }
+        }
+
+        .money-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #1e40af;
+            border-radius: 50%;
+            animation: particleFloat 10s linear infinite;
+            box-shadow: 0 0 15px rgba(30, 64, 175, 0.8);
+        }
+
+        .particle:nth-child(1) { left: 5%; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 15%; animation-delay: 2s; }
+        .particle:nth-child(3) { left: 25%; animation-delay: 4s; }
+        .particle:nth-child(4) { left: 35%; animation-delay: 6s; }
+        .particle:nth-child(5) { left: 45%; animation-delay: 8s; }
+        .particle:nth-child(6) { left: 55%; animation-delay: 1s; }
+        .particle:nth-child(7) { left: 65%; animation-delay: 3s; }
+        .particle:nth-child(8) { left: 75%; animation-delay: 5s; }
+        .particle:nth-child(9) { left: 85%; animation-delay: 7s; }
+        .particle:nth-child(10) { left: 95%; animation-delay: 9s; }
+        .particle:nth-child(11) { left: 10%; animation-delay: 0.5s; }
+        .particle:nth-child(12) { left: 20%; animation-delay: 2.5s; }
+        .particle:nth-child(13) { left: 30%; animation-delay: 4.5s; }
+        .particle:nth-child(14) { left: 40%; animation-delay: 6.5s; }
+        .particle:nth-child(15) { left: 50%; animation-delay: 8.5s; }
+
+        @keyframes particleFloat {
+            0% {
+                top: -10px;
+                opacity: 0;
+                transform: scale(0);
+            }
+            10% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            90% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                top: 110%;
+                opacity: 0;
+                transform: scale(0);
+            }
+        }
+
+        .signup-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+            margin: 2rem auto;
+        }
+
+        .signup-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 2px solid #1e40af;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(30, 64, 175, 0.3);
+            padding: 2.5rem;
             text-align: center;
-            color: #FFFFFF;
-            width: 90%;
-            max-width: 400px;
-        }
-
-        h2 {
-            color: #1E90FF;
-        }
-
-        form {
-            margin: 20px 0;
-        }
-
-        label {
-            color: #5F9EA0;
-            display: block;
-            margin: 10px 0 5px;
-        }
-
-        input {
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            background-color: #1E90FF;
-            color: white;
+            position: relative;
             width: 100%;
-            box-sizing: border-box;
         }
 
-        button {
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
+        .signup-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(30, 64, 175, 0.1) 100%);
+            border-radius: 20px;
+            z-index: -1;
+        }
+
+        .signup-header {
+            margin-bottom: 2rem;
+        }
+
+        .signup-header .logo {
+            font-size: 3rem;
+            color: #1e40af;
+            margin-bottom: 1rem;
+        }
+
+        .signup-header h2 {
+            color: #1e40af;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .signup-header p {
+            color: #374151;
+            font-size: 1.1rem;
+        }
+
+        .form-floating {
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Floating label: use Bootstrap's sizing and triggers */
+        .form-floating > .form-control,
+        .form-floating > .form-select {
+            height: calc(3.5rem + 2px);
+            padding: 1rem 0.75rem;
+        }
+        
+        .form-floating > label {
+            transform-origin: left top;
+            transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
+        }
+        
+        /* Float when focused or when there's content */
+        .form-floating > .form-control:focus ~ label,
+        .form-floating > .form-control:not(:placeholder-shown) ~ label {
+            transform: scale(0.85) translateY(-0.6rem) translateX(0.15rem);
+            opacity: 0.75;
+        }
+        
+        /* Keep placeholder present (needed for :placeholder-shown) but invisible */
+        .form-floating > .form-control::placeholder {
+            color: transparent;
+        }
+
+        /* Keep the card title centered, but forms left-aligned */
+        .signup-card { text-align: center; }
+        .signup-card .form-floating,
+        .signup-card .help-text,
+        .signup-card .text-danger { text-align: left; }
+
+        /* Ensure floating label sits at the left padding edge */
+        .form-floating { position: relative; }
+        .form-floating > label {
+            left: 0.75rem;
+            right: 0.75rem;
+        }
+
+        /* Keep password help bullets tidy */
+        .help-text ul { margin: 0.25rem 0 0; padding-left: 1.1rem; }
+
+        /* Add reduced-motion support so animations/video pause for users who prefer it */
+        @media (prefers-reduced-motion: reduce) {
+            .animated-background, .floating-icons, .money-particles { animation: none !important; }
+            .background-video { display: none; }
+        }
+
+        .form-control {
+            border: 2px solid #d1d5db;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #1e40af;
+            box-shadow: 0 0 0 0.2rem rgba(30, 64, 175, 0.25);
+            outline: none;
+        }
+
+        .btn-signup {
+            background: #059669;
             border: none;
-            background-color: #1E90FF;
-            color: white;
-            cursor: pointer;
+            border-radius: 12px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
             width: 100%;
+            margin-bottom: 1.5rem;
         }
 
-        button:hover {
-            background-color: #4682B4;
+        .btn-signup:hover {
+            background: #047857;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
         }
 
-        a {
-            color: #1E90FF;
+        .login-link {
+            color: #1e40af;
             text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
         }
 
-        a:hover {
-            color: #4682B4;
+        .login-link:hover {
+            color: #1e3a8a;
+            text-decoration: underline;
         }
 
-        p {
-            margin-top: 20px;
+        .alert {
+            border-radius: 12px;
+            border: none;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .alert-danger {
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            color: #dc2626;
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            color: #16a34a;
+        }
+
+        .help-text {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            text-align: left;
         }
     </style>
-    <title>Sign up</title>
 </head>
 <body>
-
-    <div class="container">
-        <h2>Sign up</h2>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Signup</button>
-        </form>
-
-        <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
-        <p>Note: After signing up, you will receive a verification email to activate your account.</p>
+    <!-- Background Video (Optional) -->
+    <!-- To add your own video: Place an MP4 file at tracker/static/images/expense_tracker_background.mp4 -->
+    <!-- Or update the src below to point to your video file -->
+    <video class="background-video" autoplay muted loop playsinline>
+        <source src="{% static 'images/expense_tracker_background.mp4' %}" type="video/mp4">
+        <!-- Fallback: Animated background will show if video fails to load -->
+    </video>
+    <div class="background-overlay"></div>
+    <div class="animated-background"></div>
+    <div class="floating-icons">
+        <i class="bi bi-wallet2 floating-icon"></i>
+        <i class="bi bi-credit-card floating-icon"></i>
+        <i class="bi bi-graph-up floating-icon"></i>
+        <i class="bi bi-pie-chart floating-icon"></i>
+        <i class="bi bi-graph-down floating-icon"></i>
+        <i class="bi bi-cash floating-icon"></i>
+        <i class="bi bi-bank floating-icon"></i>
+        <i class="bi bi-coin floating-icon"></i>
+        <i class="bi bi-calculator floating-icon"></i>
+        <i class="bi bi-receipt floating-icon"></i>
+        <i class="bi bi-safe floating-icon"></i>
+        <i class="bi bi-piggy-bank floating-icon"></i>
+    </div>
+    <div class="money-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
     </div>
 
+    <div class="signup-container">
+        <div class="signup-card">
+            <div class="signup-header">
+                <div class="logo">
+                    <i class="bi bi-wallet2"></i>
+                </div>
+                <h2>Create Account</h2>
+                <p>Join Expense Tracker to start managing your finances</p>
+            </div>
+
+            <!-- Display Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        <i class="bi bi-info-circle me-2"></i>{{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="form-floating mb-3">
+                    {{ form.username }}
+                    <label for="{{ form.username.id_for_label }}">
+                        <i class="bi bi-person me-1"></i>Username
+                    </label>
+                    {% if form.username.errors %}
+                        <div class="text-danger small mt-1">{{ form.username.errors.0 }}</div>
+                    {% endif %}
+                    {% if form.username.help_text %}
+                        <div class="help-text">{{ form.username.help_text }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-floating mb-3">
+                    {{ form.email }}
+                    <label for="{{ form.email.id_for_label }}">
+                        <i class="bi bi-envelope me-1"></i>Email
+                    </label>
+                    {% if form.email.errors %}
+                        <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
+                    {% endif %}
+                    {% if form.email.help_text %}
+                        <div class="help-text">{{ form.email.help_text }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-floating mb-3">
+                    {{ form.password1 }}
+                    <label for="{{ form.password1.id_for_label }}">
+                        <i class="bi bi-lock me-1"></i>Password
+                    </label>
+                    {% if form.password1.errors %}
+                        <div class="text-danger small mt-1">{{ form.password1.errors.0 }}</div>
+                    {% endif %}
+                    {% if form.password1.help_text %}
+                        <div class="help-text">{{ form.password1.help_text }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-floating mb-4">
+                    {{ form.password2 }}
+                    <label for="{{ form.password2.id_for_label }}">
+                        <i class="bi bi-shield-lock me-1"></i>Confirm Password
+                    </label>
+                    {% if form.password2.errors %}
+                        <div class="text-danger small mt-1">{{ form.password2.errors.0 }}</div>
+                    {% endif %}
+                    {% if form.password2.help_text %}
+                        <div class="help-text">{{ form.password2.help_text }}</div>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="btn btn-signup">
+                    <i class="bi bi-person-plus me-2"></i>Create Account
+                </button>
+            </form>
+
+            <p class="mb-2">
+                Already have an account? 
+                <a href="{% url 'login' %}" class="login-link">Login here</a>
+            </p>
+            
+            <p class="text-muted small mb-0">
+                <i class="bi bi-check-circle me-1"></i>
+                Your account will be created immediately and you can login right away!
+            </p>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Safari/date edge case helper for floating labels
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.form-floating input, .form-floating textarea, .form-floating select')
+                .forEach(el => {
+                    const wrap = el.closest('.form-floating');
+                    const toggle = () => wrap && wrap.classList.toggle('is-filled', !!el.value);
+                    ['input','change'].forEach(evt => el.addEventListener(evt, toggle));
+                    toggle();
+                });
+        });
+
+        // Video background handling
+        document.addEventListener('DOMContentLoaded', () => {
+            const video = document.querySelector('.background-video');
+            const animatedBg = document.querySelector('.animated-background');
+            const floatingIcons = document.querySelector('.floating-icons');
+            
+            if (video) {
+                video.addEventListener('loadeddata', () => {
+                    // Video loaded successfully
+                    animatedBg.style.display = 'none';
+                    floatingIcons.style.opacity = '0.1';
+                });
+                
+                video.addEventListener('error', () => {
+                    // Video failed to load, show animated background
+                    video.style.display = 'none';
+                    animatedBg.style.display = 'block';
+                    floatingIcons.style.opacity = '1';
+                });
+                
+                // Try to play video
+                video.play().catch(() => {
+                    // Autoplay failed, show animated background
+                    video.style.display = 'none';
+                    animatedBg.style.display = 'block';
+                    floatingIcons.style.opacity = '1';
+                });
+            }
+        });
+    </script>
+    
+    <style>
+        .form-floating.is-filled > label {
+            transform: scale(0.85) translateY(-0.6rem) translateX(0.15rem);
+            opacity: 0.75;
+        }
+    </style>
 </body>
 </html>

@@ -16,10 +16,34 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path, include  # Make sure 'include' is imported
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')),  # Authentication URLs
-    path('', include('tracker.urls')),  # This includes the URLs from your 'tracker' app
+    
+    # API endpoints
+    path('api/', include('api.urls')),
+    
+    # Legacy tracker URLs (maintain backward compatibility)
+    path('', include('tracker.urls')),
+    
+    # API documentation
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    
+    # Authentication
+    path('accounts/', include('allauth.urls')),
 ]
+
+# Serve static and media files in development
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Custom error handlers
+handler404 = 'tracker.views.custom_404'
+handler500 = 'tracker.views.custom_500'
