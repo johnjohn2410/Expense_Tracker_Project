@@ -1,5 +1,5 @@
 # Use Python 3.11 slim image for security and size
-FROM python:3.11-slim as base
+FROM python:3.11-slim AS base
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -33,8 +33,14 @@ COPY . .
 RUN mkdir -p /app/staticfiles /app/media /app/logs \
     && chown -R django:django /app
 
-# Collect static files
-RUN python manage.py collectstatic --noinput
+# Set Django settings module
+ENV DJANGO_SETTINGS_MODULE=Expense_Tracker_Project.settings
+
+# Collect static files (provide minimal env just for this command)
+RUN SECRET_KEY=build-only \
+    DATABASE_URL=sqlite:///db.sqlite3 \
+    ALLOWED_HOSTS="*" \
+    python manage.py collectstatic --noinput
 
 # Switch to non-root user
 USER django
