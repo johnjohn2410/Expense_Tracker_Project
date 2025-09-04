@@ -170,7 +170,7 @@ jobs:
       
       - name: Run container tests
         run: |
-          docker compose -f docker-compose.test.yml up --build --abort-on-container-exit
+          docker compose -f docker-compose.test.yml up --build --abort-on-container-exit --exit-code-from app
         env:
           COMPOSE_DOCKER_CLI_BUILD: 1
           DOCKER_BUILDKIT: 1

@@ -1,0 +1,44 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: expense_tracker_test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: expense-tracker:latest
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DJANGO_SETTINGS_MODULE: Expense_Tracker_Project.settings_simple
+      DATABASE_URL: postgres://postgres:postgres@db:5432/expense_tracker_test
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY: test-secret-key
+      DEBUG: "1"
+      # helpful if Celery tries to run during tests:
+      CELERY_TASK_ALWAYS_EAGER: "1"
+    command: >
+      sh -c "
+        python manage.py migrate --noinput &&
+        pytest -q --disable-warnings --maxfail=1 --tb=short
+      "
